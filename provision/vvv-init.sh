@@ -26,6 +26,28 @@ if [[ ! -f "${VVV_PATH_TO_SITE}/public_html/wp-load.php" ]]; then
 	noroot wp core download --version="${WP_VERSION}"
 fi
 
+  # Delete unrequired themes
+  echo "Deleting unrequired default themes..."
+  wp theme delete twentysixteen  --allow-root
+  wp theme delete twentyseventeen  --allow-root
+  wp theme delete twentynineteen  --allow-root
+
+  echo 'Installing plugins...\n'
+  wp plugin install wordpress-importer --activate --allow-root
+  wp plugin install developer --activate --allow-root
+  # wp plugin install debug-bar --activate --allow-root
+  # wp plugin install debug-bar-console --activate --allow-root
+  # wp plugin install debug-bar-cron --activate --allow-root
+  # wp plugin install debug-bar-extender --activate --allow-root
+  wp plugin install rewrite-rules-inspector --activate --allow-root
+  wp plugin install log-deprecated-notices --allow-root
+  wp plugin install log-viewer --allow-root
+  wp plugin install wordpress-beta-tester --allow-root
+
+  # Delete unrequired default plugins
+  echo "Deleting unrequired default plugins..."
+  wp plugin delete hello   --allow-root
+  wp plugin delete akismet --allow-root
 if [[ ! -f "${VVV_PATH_TO_SITE}/public_html/wp-config.php" ]]; then
   echo "Configuring WordPress Stable..."
   noroot wp core config --dbname="${DB_NAME}" --dbuser=wp --dbpass=wp --quiet --extra-php <<PHP
